@@ -1,0 +1,554 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		A05DE31F2EFD27770082456A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A05DE3052EFD27750082456A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A05DE30C2EFD27750082456A;
+			remoteInfo = OmniAdmin;
+		};
+		A05DE3292EFD27770082456A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A05DE3052EFD27750082456A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A05DE30C2EFD27750082456A;
+			remoteInfo = OmniAdmin;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A05DE30D2EFD27750082456A /* OmniAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OmniAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A05DE31E2EFD27770082456A /* OmniAdminTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OmniAdminTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A05DE3282EFD27770082456A /* OmniAdminUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OmniAdminUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		A05DE30F2EFD27750082456A /* OmniAdmin */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = OmniAdmin;
+			sourceTree = "<group>";
+		};
+		A05DE3212EFD27770082456A /* OmniAdminTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = OmniAdminTests;
+			sourceTree = "<group>";
+		};
+		A05DE32B2EFD27770082456A /* OmniAdminUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = OmniAdminUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A05DE30A2EFD27750082456A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A05DE31B2EFD27770082456A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A05DE3252EFD27770082456A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A05DE3042EFD27750082456A = {
+			isa = PBXGroup;
+			children = (
+				A05DE30F2EFD27750082456A /* OmniAdmin */,
+				A05DE3212EFD27770082456A /* OmniAdminTests */,
+				A05DE32B2EFD27770082456A /* OmniAdminUITests */,
+				A05DE30E2EFD27750082456A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A05DE30E2EFD27750082456A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A05DE30D2EFD27750082456A /* OmniAdmin.app */,
+				A05DE31E2EFD27770082456A /* OmniAdminTests.xctest */,
+				A05DE3282EFD27770082456A /* OmniAdminUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A05DE30C2EFD27750082456A /* OmniAdmin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A05DE3322EFD27770082456A /* Build configuration list for PBXNativeTarget "OmniAdmin" */;
+			buildPhases = (
+				A05DE3092EFD27750082456A /* Sources */,
+				A05DE30A2EFD27750082456A /* Frameworks */,
+				A05DE30B2EFD27750082456A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A05DE30F2EFD27750082456A /* OmniAdmin */,
+			);
+			name = OmniAdmin;
+			packageProductDependencies = (
+			);
+			productName = OmniAdmin;
+			productReference = A05DE30D2EFD27750082456A /* OmniAdmin.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A05DE31D2EFD27770082456A /* OmniAdminTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A05DE3352EFD27770082456A /* Build configuration list for PBXNativeTarget "OmniAdminTests" */;
+			buildPhases = (
+				A05DE31A2EFD27770082456A /* Sources */,
+				A05DE31B2EFD27770082456A /* Frameworks */,
+				A05DE31C2EFD27770082456A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A05DE3202EFD27770082456A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A05DE3212EFD27770082456A /* OmniAdminTests */,
+			);
+			name = OmniAdminTests;
+			packageProductDependencies = (
+			);
+			productName = OmniAdminTests;
+			productReference = A05DE31E2EFD27770082456A /* OmniAdminTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A05DE3272EFD27770082456A /* OmniAdminUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A05DE3382EFD27770082456A /* Build configuration list for PBXNativeTarget "OmniAdminUITests" */;
+			buildPhases = (
+				A05DE3242EFD27770082456A /* Sources */,
+				A05DE3252EFD27770082456A /* Frameworks */,
+				A05DE3262EFD27770082456A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A05DE32A2EFD27770082456A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A05DE32B2EFD27770082456A /* OmniAdminUITests */,
+			);
+			name = OmniAdminUITests;
+			packageProductDependencies = (
+			);
+			productName = OmniAdminUITests;
+			productReference = A05DE3282EFD27770082456A /* OmniAdminUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A05DE3052EFD27750082456A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					A05DE30C2EFD27750082456A = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					A05DE31D2EFD27770082456A = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = A05DE30C2EFD27750082456A;
+					};
+					A05DE3272EFD27770082456A = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = A05DE30C2EFD27750082456A;
+					};
+				};
+			};
+			buildConfigurationList = A05DE3082EFD27750082456A /* Build configuration list for PBXProject "OmniAdmin" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A05DE3042EFD27750082456A;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A05DE30E2EFD27750082456A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A05DE30C2EFD27750082456A /* OmniAdmin */,
+				A05DE31D2EFD27770082456A /* OmniAdminTests */,
+				A05DE3272EFD27770082456A /* OmniAdminUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A05DE30B2EFD27750082456A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A05DE31C2EFD27770082456A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A05DE3262EFD27770082456A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A05DE3092EFD27750082456A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A05DE31A2EFD27770082456A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A05DE3242EFD27770082456A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A05DE3202EFD27770082456A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A05DE30C2EFD27750082456A /* OmniAdmin */;
+			targetProxy = A05DE31F2EFD27770082456A /* PBXContainerItemProxy */;
+		};
+		A05DE32A2EFD27770082456A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A05DE30C2EFD27750082456A /* OmniAdmin */;
+			targetProxy = A05DE3292EFD27770082456A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A05DE3302EFD27770082456A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A05DE3312EFD27770082456A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		A05DE3332EFD27770082456A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OmniAdmin/OmniAdmin.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"OmniAdmin/Preview Content\"";
+				DEVELOPMENT_TEAM = KCZ9U3V7VQ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = id.ios.rajaongkirios.OmniAdmin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A05DE3342EFD27770082456A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OmniAdmin/OmniAdmin.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"OmniAdmin/Preview Content\"";
+				DEVELOPMENT_TEAM = KCZ9U3V7VQ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = id.ios.rajaongkirios.OmniAdmin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A05DE3362EFD27770082456A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KCZ9U3V7VQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = id.ios.rajaongkirios.OmniAdminTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OmniAdmin.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OmniAdmin";
+			};
+			name = Debug;
+		};
+		A05DE3372EFD27770082456A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KCZ9U3V7VQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = id.ios.rajaongkirios.OmniAdminTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OmniAdmin.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OmniAdmin";
+			};
+			name = Release;
+		};
+		A05DE3392EFD27770082456A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KCZ9U3V7VQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = id.ios.rajaongkirios.OmniAdminUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = OmniAdmin;
+			};
+			name = Debug;
+		};
+		A05DE33A2EFD27770082456A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KCZ9U3V7VQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = id.ios.rajaongkirios.OmniAdminUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = OmniAdmin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A05DE3082EFD27750082456A /* Build configuration list for PBXProject "OmniAdmin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A05DE3302EFD27770082456A /* Debug */,
+				A05DE3312EFD27770082456A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A05DE3322EFD27770082456A /* Build configuration list for PBXNativeTarget "OmniAdmin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A05DE3332EFD27770082456A /* Debug */,
+				A05DE3342EFD27770082456A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A05DE3352EFD27770082456A /* Build configuration list for PBXNativeTarget "OmniAdminTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A05DE3362EFD27770082456A /* Debug */,
+				A05DE3372EFD27770082456A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A05DE3382EFD27770082456A /* Build configuration list for PBXNativeTarget "OmniAdminUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A05DE3392EFD27770082456A /* Debug */,
+				A05DE33A2EFD27770082456A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A05DE3052EFD27750082456A /* Project object */;
+}
