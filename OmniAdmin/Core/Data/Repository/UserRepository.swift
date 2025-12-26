@@ -9,6 +9,7 @@ import Foundation
 
 protocol UserRepositoryProtocol {
     func login(username: String, password: String) async throws -> UserInfo
+    func register(username: String, password: String) async throws -> UserInfo
     func logout()
 }
 
@@ -19,7 +20,7 @@ final class UserRepository: UserRepositoryProtocol {
     
     private let accessTokenKey = "accessToken"
     private let userSessionKey = "kSessionUser"
-
+    
     init(
         client: APIClient,
         secureStorage: SecureStorageProtocol,
@@ -29,7 +30,7 @@ final class UserRepository: UserRepositoryProtocol {
         self.secureStorage = secureStorage
         self.storage = storage
     }
-
+    
     func login(username: String, password: String) async throws -> UserInfo {
         let parameters: [String: Any] = [
             "username": username,
@@ -50,7 +51,26 @@ final class UserRepository: UserRepositoryProtocol {
         
         return response.user
     }
-
+    
+    // MARK: - Register
+    func register(username: String, password: String) async throws -> UserInfo {
+        let parameters: [String: Any] = [
+            "username": username,
+            "password": password,
+            "role": "admin" // Kita hardcode admin sesuai kebutuhan OmniAdmin
+        ]
+        
+        // Di Vapor lo, register balikin UserResponse (bukan LoginResponse karena gak ada token)
+        // Jadi kita tembak endpoint register
+        let response: UserInfo = try await client.request(
+            APIConstants.Endpoints.register, // Sesuaikan dengan route di Vapor lo
+            method: .post,
+            parameters: parameters
+        )
+        
+        return response
+    }
+    
     func logout() {
         try? secureStorage.clearAll()
         storage.remove(key: userSessionKey)
