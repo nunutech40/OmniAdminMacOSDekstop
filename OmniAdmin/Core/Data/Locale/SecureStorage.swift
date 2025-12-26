@@ -6,11 +6,11 @@
 //
 
 import Foundation
-import KeychainAccess
+@preconcurrency import KeychainAccess
 
 // MARK: - AuthLocalDataSourceProtocol (Interface Anda)
 // Tidak perlu diubah.
-protocol SecureStorageProtocol {
+protocol SecureStorageProtocol: Sendable {
     func saveToken(_ token: String, key: String) throws
     func getToken(key: String) -> String?
     func clearAll() throws
@@ -53,11 +53,7 @@ final class SecureStorage: SecureStorageProtocol { // Gunakan 'final class'
     // MARK: - Operasi Penghapusan
     func clearAll() throws {
         // Menghapus item berdasarkan key
-        try keychain.remove(accessTokenKey)
-        try keychain.remove(refreshTokenKey)
-        
-        // Catatan: Jika Anda ingin menghapus SEMUA data di service ini, gunakan:
-        // try keychain.removeAll()
+       try keychain.removeAll()
     }
     
     // Anda mungkin juga ingin menambahkan fungsi helper untuk menyimpan/mengambil Access Token dan Refresh Token
