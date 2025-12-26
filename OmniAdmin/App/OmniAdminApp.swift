@@ -16,6 +16,5 @@ struct OmniAdminApp: App {
             ContentView()
                 .environmentObject(authManager)
         }
-        .windowResizability(.contentSize)
     }
 }

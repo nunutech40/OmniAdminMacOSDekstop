@@ -13,24 +13,27 @@
 
 import SwiftUI
 
+// MARK: - Admin Module Enum
 enum AdminModule: Hashable {
     case portfolios
     case settings
 }
 
 struct MainDashboard: View {
-    // 1. Hubungkan ke AuthManager buat dapet akses Logout & Profile
+    // 1. Dependencies
     @EnvironmentObject var authManager: AuthenticationManager
     
+    // 2. State Management (Sesuai request lo, tetep pake mock dulu)
+    @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var selectedModule: AdminModule? = .portfolios
     @State private var selectedProjectID: UUID?
     @State private var searchText: String = ""
     
-    // Pakai Project (sesuai Model), bukan PortfolioProject
+    // Pakai data dummy lo dulu
     @State private var projects = mockProjects
 
     var body: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
             // KOLOM 1: SIDEBAR
             List(selection: $selectedModule) {
                 Section("Management") {
@@ -44,50 +47,64 @@ struct MainDashboard: View {
                     }
                 }
             }
+            .navigationSplitViewColumnWidth(min: 200, ideal: 250)
             .listStyle(.sidebar)
             .navigationTitle("OmniAdmin")
             
         } content: {
             // KOLOM 2: LIST (TABLE)
-            Group {
+            VStack {
                 switch selectedModule {
                 case .portfolios:
                     PortfolioListView(projects: filteredProjects, selectedID: $selectedProjectID)
                         .searchable(text: $searchText, placement: .toolbar, prompt: "Search projects...")
                 case .settings:
-                    // 2. Di sini lo bisa taruh info user & tombol Logout
                     settingsView
                 case .none:
                     Text("Select a module")
+                        .foregroundColor(.secondary)
                 }
             }
+            .navigationSplitViewColumnWidth(min: 350, ideal: 400)
+            
         } detail: {
             // KOLOM 3: EDITOR
             if let projectID = selectedProjectID,
                let project = projects.first(where: { $0.id == projectID }) {
                 ProjectEditorView(project: project)
             } else {
-                ContentUnavailableView("No Project Selected", systemImage: "doc.text.magnifyingglass")
+                ContentUnavailableView(
+                    "No Project Selected",
+                    systemImage: "doc.text.magnifyingglass",
+                    description: Text("Silahkan pilih project di kolom tengah.")
+                )
             }
         }
-        .frame(minWidth: 900, minHeight: 600)
+        // Kunci frame biar window dashboard lo gagah (min 1000px)
+        .frame(minWidth: 1000, minHeight: 650)
     }
     
+    // MARK: - Logic Helpers
     var filteredProjects: [Project] {
         searchText.isEmpty ? projects : projects.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
     }
     
-    // 3. View Settings simpel biar gak ngerusak layout utama
+    // MARK: - Settings View
     private var settingsView: some View {
         Form {
             Section("User Profile") {
                 LabeledContent("Username", value: authManager.currentUser?.username ?? "-")
-                LabeledContent("Role", value: authManager.currentUser?.role ?? "-")
+                LabeledContent("Role", value: authManager.currentUser?.role ?? "Admin")
             }
             
             Section {
-                Button("Logout", role: .destructive) {
-                    authManager.logout() // Panggil fungsi logout dari manager lo
+                Button(role: .destructive) {
+                    authManager.logout()
+                } label: {
+                    HStack {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                        Text("Logout")
+                    }
                 }
             }
         }

@@ -6,32 +6,25 @@
 //
 
 import SwiftUI
-
 struct ContentView: View {
     @EnvironmentObject var authManager: AuthenticationManager
 
     var body: some View {
-        ZStack {
+        // Gunakan Group agar transisi lebih clean
+        Group {
             if authManager.isCheckingAuth {
-                // 1. SPLASH SCREEN (Sedang ngecek token di Keychain)
                 splashView
-                    .transition(.opacity)
             } else if authManager.isAuthenticated {
-                // 2. MAIN DASHBOARD (Sudah Login)
                 createDashboardModule()
-                    .transition(.asymmetric(
-                        insertion: .opacity.combined(with: .scale(scale: 0.95)),
-                        removal: .opacity
-                    ))
             } else {
-                // 3. LOGIN SCREEN (Belum Login)
                 createLoginModule()
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
-        // Animasi perpindahan antar state
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: authManager.isCheckingAuth)
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: authManager.isAuthenticated)
+        // Taruh frame di level root biar window gak "kaget"
+        .frame(minWidth: authManager.isAuthenticated ? 1000 : 400,
+                       minHeight: authManager.isAuthenticated ? 700 : 450)
+        .animation(.easeInOut(duration: 0.3), value: authManager.isAuthenticated)
+        .animation(.easeInOut(duration: 0.3), value: authManager.isCheckingAuth)
     }
 }
 
