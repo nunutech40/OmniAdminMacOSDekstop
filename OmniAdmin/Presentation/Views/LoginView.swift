@@ -4,13 +4,15 @@
 //
 //  Created by Nunu Nugraha on 25/12/25.
 //
+
 import SwiftUI
 
 struct LoginView: View {
-    @EnvironmentObject var authManager: AuthManager
+    // Inject VM dari ContentView (Manual DI)
+    @ObservedObject var viewModel: LoginViewModel
+    
     @State private var email = ""
     @State private var password = ""
-    @State private var isLoading = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -23,44 +25,49 @@ struct LoginView: View {
                 .fontWeight(.bold)
             
             VStack(alignment: .leading) {
-                Text("Email")
+                Text("Username / Email")
                     .font(.caption)
-                TextField("nunu@example.com", text: $email)
+                TextField("nunu", text: $email)
                     .textFieldStyle(.roundedBorder)
+                    .disabled(viewModel.isLoading)
                 
                 Text("Password")
                     .font(.caption)
                     .padding(.top, 8)
                 SecureField("••••••••", text: $password)
                     .textFieldStyle(.roundedBorder)
+                    .disabled(viewModel.isLoading)
             }
             .frame(width: 250)
             
-            if isLoading {
+            // Tampilkan error kalau login gagal
+            if viewModel.isError {
+                Text(viewModel.errorMessage)
+                    .font(.caption)
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 250)
+            }
+            
+            if viewModel.isLoading {
                 ProgressView()
                     .controlSize(.small)
             } else {
-                Button(action: handleLogin) {
+                Button(action: {
+                    Task {
+                        await viewModel.login(username: email, password: password)
+                    }
+                }) {
                     Text("Login")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
-                .keyboardShortcut(.defaultAction) // Enter buat login
+                .keyboardShortcut(.defaultAction)
                 .frame(width: 250)
                 .disabled(email.isEmpty || password.isEmpty)
             }
         }
         .padding(40)
-        // Ukuran window login macOS yang pas
         .frame(width: 400, height: 450)
-    }
-
-    func handleLogin() {
-        isLoading = true
-        // Simulasi hit API JWT
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            authManager.login(jwt: "dummy-jwt-token")
-            isLoading = false
-        }
     }
 }

@@ -1,0 +1,6 @@
+framework module Pods_OmniAdmin_OmniAdminUITests {
+  umbrella header "Pods-OmniAdmin-OmniAdminUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

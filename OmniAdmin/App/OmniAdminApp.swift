@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct OmniAdminApp: App {
+    @StateObject private var authManager = Injection.shared.provideAuthManager()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(authManager)
         }
         .windowResizability(.contentSize)
     }

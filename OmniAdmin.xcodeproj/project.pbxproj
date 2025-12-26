@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		69E16EEF204B0233CFB34FBA /* Pods_OmniAdmin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AED40F25C01A1FF1664A786 /* Pods_OmniAdmin.framework */; };
+		8D8BC203FA738636040C38B0 /* Pods_OmniAdminTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A3354BDD1EE178054EE3CA9 /* Pods_OmniAdminTests.framework */; };
+		C69E2990D84FAAF4D4624465 /* Pods_OmniAdmin_OmniAdminUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7E0BA8F3C165A97550009CF /* Pods_OmniAdmin_OmniAdminUITests.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		A05DE31F2EFD27770082456A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,14 +30,36 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		036ADFE2693FDB4D31929D37 /* Pods-OmniAdmin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmniAdmin.release.xcconfig"; path = "Target Support Files/Pods-OmniAdmin/Pods-OmniAdmin.release.xcconfig"; sourceTree = "<group>"; };
+		12560DC7C4B583200834E906 /* Pods-OmniAdmin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmniAdmin.debug.xcconfig"; path = "Target Support Files/Pods-OmniAdmin/Pods-OmniAdmin.debug.xcconfig"; sourceTree = "<group>"; };
+		54FBF71DD5441241172E68E6 /* Pods-OmniAdminTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmniAdminTests.debug.xcconfig"; path = "Target Support Files/Pods-OmniAdminTests/Pods-OmniAdminTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6A3354BDD1EE178054EE3CA9 /* Pods_OmniAdminTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OmniAdminTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6AED40F25C01A1FF1664A786 /* Pods_OmniAdmin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OmniAdmin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		97DC5B80F2F169A875F77638 /* Pods-OmniAdmin-OmniAdminUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmniAdmin-OmniAdminUITests.release.xcconfig"; path = "Target Support Files/Pods-OmniAdmin-OmniAdminUITests/Pods-OmniAdmin-OmniAdminUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A05DE30D2EFD27750082456A /* OmniAdmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OmniAdmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A05DE31E2EFD27770082456A /* OmniAdminTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OmniAdminTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A05DE3282EFD27770082456A /* OmniAdminUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OmniAdminUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6EC87E821AEBAC8A8D77C78 /* Pods-OmniAdmin-OmniAdminUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmniAdmin-OmniAdminUITests.debug.xcconfig"; path = "Target Support Files/Pods-OmniAdmin-OmniAdminUITests/Pods-OmniAdmin-OmniAdminUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		C0D8F50E17EBCDA9F0BAED78 /* Pods-OmniAdminTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmniAdminTests.release.xcconfig"; path = "Target Support Files/Pods-OmniAdminTests/Pods-OmniAdminTests.release.xcconfig"; sourceTree = "<group>"; };
+		D7E0BA8F3C165A97550009CF /* Pods_OmniAdmin_OmniAdminUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OmniAdmin_OmniAdminUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A05DE6D02EFEDFCA0082456A /* Exceptions for "OmniAdmin" folder in "OmniAdmin" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A05DE30C2EFD27750082456A /* OmniAdmin */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A05DE30F2EFD27750082456A /* OmniAdmin */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A05DE6D02EFEDFCA0082456A /* Exceptions for "OmniAdmin" folder in "OmniAdmin" target */,
+			);
 			path = OmniAdmin;
 			sourceTree = "<group>";
 		};
@@ -52,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69E16EEF204B0233CFB34FBA /* Pods_OmniAdmin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D8BC203FA738636040C38B0 /* Pods_OmniAdminTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,12 +96,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C69E2990D84FAAF4D4624465 /* Pods_OmniAdmin_OmniAdminUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		746DDA2E00CD1FB7E25168FA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6AED40F25C01A1FF1664A786 /* Pods_OmniAdmin.framework */,
+				D7E0BA8F3C165A97550009CF /* Pods_OmniAdmin_OmniAdminUITests.framework */,
+				6A3354BDD1EE178054EE3CA9 /* Pods_OmniAdminTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		78948C71A314FEB5730A6A3E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				12560DC7C4B583200834E906 /* Pods-OmniAdmin.debug.xcconfig */,
+				036ADFE2693FDB4D31929D37 /* Pods-OmniAdmin.release.xcconfig */,
+				A6EC87E821AEBAC8A8D77C78 /* Pods-OmniAdmin-OmniAdminUITests.debug.xcconfig */,
+				97DC5B80F2F169A875F77638 /* Pods-OmniAdmin-OmniAdminUITests.release.xcconfig */,
+				54FBF71DD5441241172E68E6 /* Pods-OmniAdminTests.debug.xcconfig */,
+				C0D8F50E17EBCDA9F0BAED78 /* Pods-OmniAdminTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		A05DE3042EFD27750082456A = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +133,8 @@
 				A05DE3212EFD27770082456A /* OmniAdminTests */,
 				A05DE32B2EFD27770082456A /* OmniAdminUITests */,
 				A05DE30E2EFD27750082456A /* Products */,
+				78948C71A314FEB5730A6A3E /* Pods */,
+				746DDA2E00CD1FB7E25168FA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,9 +155,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A05DE3322EFD27770082456A /* Build configuration list for PBXNativeTarget "OmniAdmin" */;
 			buildPhases = (
+				925987C16AF144363F353D9D /* [CP] Check Pods Manifest.lock */,
 				A05DE3092EFD27750082456A /* Sources */,
 				A05DE30A2EFD27750082456A /* Frameworks */,
 				A05DE30B2EFD27750082456A /* Resources */,
+				860ED2AB7F7A0801CA057BBD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -111,8 +169,6 @@
 				A05DE30F2EFD27750082456A /* OmniAdmin */,
 			);
 			name = OmniAdmin;
-			packageProductDependencies = (
-			);
 			productName = OmniAdmin;
 			productReference = A05DE30D2EFD27750082456A /* OmniAdmin.app */;
 			productType = "com.apple.product-type.application";
@@ -121,6 +177,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A05DE3352EFD27770082456A /* Build configuration list for PBXNativeTarget "OmniAdminTests" */;
 			buildPhases = (
+				4B1974EF54BE86B51251D2E7 /* [CP] Check Pods Manifest.lock */,
 				A05DE31A2EFD27770082456A /* Sources */,
 				A05DE31B2EFD27770082456A /* Frameworks */,
 				A05DE31C2EFD27770082456A /* Resources */,
@@ -134,8 +191,6 @@
 				A05DE3212EFD27770082456A /* OmniAdminTests */,
 			);
 			name = OmniAdminTests;
-			packageProductDependencies = (
-			);
 			productName = OmniAdminTests;
 			productReference = A05DE31E2EFD27770082456A /* OmniAdminTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -144,9 +199,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A05DE3382EFD27770082456A /* Build configuration list for PBXNativeTarget "OmniAdminUITests" */;
 			buildPhases = (
+				D0A2EEE4F815FA30E2B6B8DF /* [CP] Check Pods Manifest.lock */,
 				A05DE3242EFD27770082456A /* Sources */,
 				A05DE3252EFD27770082456A /* Frameworks */,
 				A05DE3262EFD27770082456A /* Resources */,
+				7C4E79565A251E9D4CDAA3AF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -157,8 +214,6 @@
 				A05DE32B2EFD27770082456A /* OmniAdminUITests */,
 			);
 			name = OmniAdminUITests;
-			packageProductDependencies = (
-			);
 			productName = OmniAdminUITests;
 			productReference = A05DE3282EFD27770082456A /* OmniAdminUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -230,6 +285,109 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4B1974EF54BE86B51251D2E7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OmniAdminTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7C4E79565A251E9D4CDAA3AF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OmniAdmin-OmniAdminUITests/Pods-OmniAdmin-OmniAdminUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OmniAdmin-OmniAdminUITests/Pods-OmniAdmin-OmniAdminUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OmniAdmin-OmniAdminUITests/Pods-OmniAdmin-OmniAdminUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		860ED2AB7F7A0801CA057BBD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OmniAdmin/Pods-OmniAdmin-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OmniAdmin/Pods-OmniAdmin-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OmniAdmin/Pods-OmniAdmin-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		925987C16AF144363F353D9D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OmniAdmin-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D0A2EEE4F815FA30E2B6B8DF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OmniAdmin-OmniAdminUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A05DE3092EFD27750082456A /* Sources */ = {
@@ -389,6 +547,7 @@
 		};
 		A05DE3332EFD27770082456A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 12560DC7C4B583200834E906 /* Pods-OmniAdmin.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -400,7 +559,9 @@
 				DEVELOPMENT_TEAM = KCZ9U3V7VQ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OmniAdmin/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -416,6 +577,7 @@
 		};
 		A05DE3342EFD27770082456A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 036ADFE2693FDB4D31929D37 /* Pods-OmniAdmin.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -427,7 +589,9 @@
 				DEVELOPMENT_TEAM = KCZ9U3V7VQ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OmniAdmin/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -443,6 +607,7 @@
 		};
 		A05DE3362EFD27770082456A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 54FBF71DD5441241172E68E6 /* Pods-OmniAdminTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -461,6 +626,7 @@
 		};
 		A05DE3372EFD27770082456A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C0D8F50E17EBCDA9F0BAED78 /* Pods-OmniAdminTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -479,6 +645,7 @@
 		};
 		A05DE3392EFD27770082456A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A6EC87E821AEBAC8A8D77C78 /* Pods-OmniAdmin-OmniAdminUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -495,6 +662,7 @@
 		};
 		A05DE33A2EFD27770082456A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97DC5B80F2F169A875F77638 /* Pods-OmniAdmin-OmniAdminUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

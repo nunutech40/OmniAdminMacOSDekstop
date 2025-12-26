@@ -1,0 +1,6 @@
+framework module Pods_OmniAdmin {
+  umbrella header "Pods-OmniAdmin-umbrella.h"
+
+  export *
+  module * { export * }
+}
