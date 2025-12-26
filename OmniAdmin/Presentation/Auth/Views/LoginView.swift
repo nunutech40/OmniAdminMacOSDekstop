@@ -8,17 +8,16 @@
 import SwiftUI
 
 struct LoginView: View {
-    // VM pake gaya @Observable (macOS 15)
     var viewModel: LoginViewModel
-    
-    // 1. Tambahin ini buat akses state global
     @EnvironmentObject var authManager: AuthenticationManager
-    
     var onSignUpTapped: () -> Void
     
     @State private var email = ""
     @State private var password = ""
     
+    // 1. Tentukan konstanta lebar biar simetris kabeh
+    private let componentWidth: CGFloat = 260
+
     var canSubmit: Bool {
         (email.isValidEmail || email.isValidUsername) &&
         password.isValidPassword &&
@@ -27,59 +26,118 @@ struct LoginView: View {
 
     var body: some View {
         ZStack {
-            Color(NSColor.windowBackgroundColor).ignoresSafeArea()
+            // Pake Material biar ada efek glass/vibrant khas macOS
+            VisualEffectView(material: .underWindowBackground, blendingMode: .behindWindow)
+                .ignoresSafeArea()
             
-            VStack(spacing: 20) {
-                // ... Header Image & Text ...
+            VStack(spacing: 30) {
                 headerSection
                 
-                VStack(alignment: .leading, spacing: 12) {
-                    CustomInputField(title: "Username / Email", text: $email, hint: "nunu / nunu@mail.com")
-                    CustomInputField(title: "Password", text: $password, hint: "••••••••", isSecure: true)
-                }
-                .frame(width: 250)
-                
-                if viewModel.isError {
-                    Text(viewModel.errorMessage).font(.caption).foregroundStyle(.red)
-                }
-                
-                if viewModel.isLoading {
-                    ProgressView().controlSize(.small)
-                } else {
-                    Button(action: {
-                        Task {
-                            // 2. Eksekusi Login
-                            await viewModel.login(username: email, password: password)
-                            
-                            // 3. JIKA SUKSES: Langsung update authManager di sini!
-                            if let user = viewModel.loggedInUser {
-                                authManager.loginSuccess(user: user)
-                            }
-                        }
-                    }) {
-                        Text("Login").frame(maxWidth: .infinity)
+                // Form Section
+                VStack(spacing: 16) {
+                    VStack(alignment: .leading, spacing: 12) {
+                        CustomInputField(title: "Username / Email", text: $email, hint: "nunu / nunu@mail.com")
+                        CustomInputField(title: "Password", text: $password, hint: "••••••••", isSecure: true)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(canSubmit ? .blue : .gray)
-                    .disabled(!canSubmit)
-                    .keyboardShortcut(.defaultAction)
+                    .frame(width: componentWidth)
+                    
+                    errorSection
                 }
                 
-                Button("Sign Up") { onSignUpTapped() }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(.blue)
+                // Action Section
+                VStack(spacing: 15) {
+                    loginButton
+                    signUpButton
+                }
             }
+            .padding(40)
         }
-        .frame(width: 400, height: 450)
+        .frame(width: 400, height: 480)
     }
 }
 
-// Header helper biar rapi
+// MARK: - Subviews
 private extension LoginView {
+    
     var headerSection: some View {
-        VStack(spacing: 10) {
-            Image(systemName: "lock.shield.fill").font(.system(size: 50)).foregroundStyle(.blue)
-            Text("OmniAdmin Login").font(.title).fontWeight(.bold)
+        VStack(spacing: 12) {
+            Image(systemName: "lock.applewatch") // Lebih estetik dibanding shield biasa
+                .font(.system(size: 55))
+                .foregroundStyle(.linearGradient(colors: [.blue, .cyan], startPoint: .top, endPoint: .bottom))
+            
+            Text("OmniAdmin")
+                .font(.system(size: 24, weight: .bold, design: .rounded))
+            
+            Text("Secure Access Gateway")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
     }
+    
+    @ViewBuilder
+    var errorSection: some View {
+        if viewModel.isError {
+            Text(viewModel.errorMessage)
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(.red)
+                .multilineTextAlignment(.center)
+                .frame(width: componentWidth)
+                .transition(.move(edge: .top).combined(with: .opacity))
+        }
+    }
+    
+    var loginButton: some View {
+        Group {
+            if viewModel.isLoading {
+                ProgressView()
+                    .controlSize(.small)
+                    .frame(width: componentWidth, height: 32)
+            } else {
+                Button(action: {
+                    Task {
+                        await viewModel.login(username: email, password: password)
+                        if let user = viewModel.loggedInUser {
+                            authManager.loginSuccess(user: user)
+                        }
+                    }
+                }) {
+                    // Pake frame di Text biar area klik-nya pas 260px
+                    Text("Sign In")
+                        .fontWeight(.semibold)
+                        .frame(width: componentWidth, height: 20)
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .tint(canSubmit ? .blue : .secondary)
+                .disabled(!canSubmit)
+                .keyboardShortcut(.defaultAction)
+            }
+        }
+    }
+    
+    var signUpButton: some View {
+        Button(action: onSignUpTapped) {
+            Text("Create New Account")
+                .font(.subheadline)
+                .frame(width: componentWidth)
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(.blue)
+    }
+}
+
+// Helper buat background transparan ala macOS
+struct VisualEffectView: NSViewRepresentable {
+    let material: NSVisualEffectView.Material
+    let blendingMode: NSVisualEffectView.BlendingMode
+    
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = material
+        view.blendingMode = blendingMode
+        view.state = .active
+        return view
+    }
+    
+    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {}
 }

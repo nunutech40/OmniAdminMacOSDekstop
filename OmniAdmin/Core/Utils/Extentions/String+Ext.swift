@@ -23,6 +23,6 @@ extension String {
     
     // Validasi Password (Contoh: Minimal 8 karakter)
     var isValidPassword: Bool {
-        return self.count >= 8
+        return self.count >= 7
     }
 }
