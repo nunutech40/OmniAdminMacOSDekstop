@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+
+import SwiftUI
+
 struct ContentView: View {
     @EnvironmentObject var authManager: AuthenticationManager
 
     var body: some View {
-        // Gunakan Group agar transisi lebih clean
-        Group {
+        ZStack {
+            // Gunakan Color solid agar transisi antar view tidak transparan/tembus desktop
+            Color(NSColor.windowBackgroundColor).ignoresSafeArea()
+
             if authManager.isCheckingAuth {
                 splashView
             } else if authManager.isAuthenticated {
@@ -20,11 +25,17 @@ struct ContentView: View {
                 createLoginModule()
             }
         }
-        // Taruh frame di level root biar window gak "kaget"
-        .frame(minWidth: authManager.isAuthenticated ? 1000 : 400,
-                       minHeight: authManager.isAuthenticated ? 700 : 450)
+        // KUNCI FRAME DI SINI:
+        // Pas Login: Paksa 400x450 (min & max sama biar gak bisa ditarik-tarik)
+        // Pas Dashboard: Min 1000x650, Max Infinity (boleh difullscreen)
+        .frame(
+            minWidth: authManager.isAuthenticated ? 1000 : 400,
+            maxWidth: authManager.isAuthenticated ? .infinity : 400,
+            minHeight: authManager.isAuthenticated ? 650 : 450,
+            maxHeight: authManager.isAuthenticated ? .infinity : 450
+        )
+        // Animasi transisi jendelanya biar smooth (pakai easeInOut)
         .animation(.easeInOut(duration: 0.3), value: authManager.isAuthenticated)
-        .animation(.easeInOut(duration: 0.3), value: authManager.isCheckingAuth)
     }
 }
 
