@@ -4,7 +4,6 @@
 //
 //  Created by Nunu Nugraha on 27/12/25.
 //
-
 import SwiftUI
 
 struct RegisterView: View {
@@ -15,6 +14,9 @@ struct RegisterView: View {
     @State private var username = ""
     @State private var password = ""
     @State private var confirmPassword = ""
+    
+    // Samakan dengan LoginView (260px) biar konsisten secara visual
+    private let componentWidth: CGFloat = 260
     
     // MARK: - Validation Logic
     private var canSubmit: Bool {
@@ -29,14 +31,14 @@ struct RegisterView: View {
         ZStack {
             backgroundLayer
             
-            VStack(spacing: 30) {
+            VStack(spacing: 35) {
                 headerSection
                 inputFormSection
                 actionSection
             }
             .padding(40)
         }
-        .frame(width: 400, height: 530)
+        .frame(width: 400, height: 550)
         .onChange(of: viewModel.isSuccess) { _, success in
             if success { onBackToLoginTapped() }
         }
@@ -47,21 +49,21 @@ struct RegisterView: View {
 private extension RegisterView {
     
     private var backgroundLayer: some View {
-        Color(NSColor.windowBackgroundColor)
+        // Efek Glassmorphism khas macOS
+        VisualEffectView(material: .underWindowBackground, blendingMode: .behindWindow)
             .ignoresSafeArea()
     }
     
     private var headerSection: some View {
         VStack(spacing: 12) {
             Image(systemName: "person.badge.plus.fill")
-                .font(.system(size: 50))
-                .foregroundStyle(.green)
+                .font(.system(size: 55))
+                .foregroundStyle(.linearGradient(colors: [.green, .teal], startPoint: .top, endPoint: .bottom))
             
-            Text("Create Admin Account")
-                .font(.title2)
-                .fontWeight(.bold)
+            Text("Create Account")
+                .font(.system(size: 24, weight: .bold, design: .rounded))
             
-            Text("Register a new administrator for OmniAdmin")
+            Text("Join the OmniAdmin network")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -75,32 +77,34 @@ private extension RegisterView {
             
             CustomInputField(title: "Confirm Password", text: $confirmPassword, hint: "Password harus cocok", isSecure: true)
             
-            // Error Message Area
             if viewModel.isError {
                 Text(viewModel.errorMessage)
-                    .font(.caption2)
+                    .font(.system(size: 11, weight: .medium))
                     .foregroundStyle(.red)
-                    .frame(maxWidth: .infinity, alignment: .center)
+                    .frame(width: componentWidth, alignment: .center)
+                    .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
-        .frame(width: 280)
+        .frame(width: componentWidth)
     }
     
     private var actionSection: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 15) {
             if viewModel.isLoading {
                 ProgressView()
                     .controlSize(.small)
+                    .frame(width: componentWidth, height: 32)
             } else {
                 Button(action: {
                     Task { await viewModel.register(username: username, pass: password) }
                 }) {
                     Text("Register Now")
                         .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity)
+                        .frame(width: componentWidth, height: 20)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(canSubmit ? .green : .gray)
+                .controlSize(.large)
+                .tint(canSubmit ? .green : .secondary)
                 .disabled(!canSubmit)
                 
                 Button("Back to Login") {
@@ -111,8 +115,5 @@ private extension RegisterView {
                 .font(.subheadline)
             }
         }
-        .frame(width: 280)
     }
 }
-
-
