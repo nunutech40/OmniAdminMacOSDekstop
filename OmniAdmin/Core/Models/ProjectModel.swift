@@ -7,17 +7,31 @@
 
 import Foundation
 
-struct Project: Identifiable, Hashable {
+struct TechStack: Codable, Identifiable, Hashable {
     let id: UUID
-    var title: String
-    var category: String
-    var isHero: Bool
-    var description: String
+    var name: String
 }
 
-// Data dummy buat ngetes UI
-let mockProjects = [
-    Project(id: UUID(), title: "OmniAdmin", category: "macOS App", isHero: true, description: "The ecosystem controller."),
-    Project(id: UUID(), title: "Bookmarker", category: "iOS App", isHero: false, description: "Track your reading list."),
-    Project(id: UUID(), title: "Postie", category: "Networking Tool", isHero: true, description: "API testing simplified.")
-]
+struct Project: Codable, Identifiable, Hashable {
+    let id: UUID
+    var title: String
+    var description: String
+    var category: String
+    var url: String
+    var isHero: Bool
+    // Update: Backend lo mengembalikan objek TechStack, bukan String
+    var techStacks: [TechStack]
+    
+    // Properti bantuan saat mengirim data (Create/Update) ke Vapor
+    var techStackIDs: [UUID]?
+
+    enum CodingKeys: String, CodingKey {
+        case id, title, description, category, isHero
+        case url = "url" // Sesuaikan dengan field di PortfolioController
+        case techStacks = "tech_stacks" // Eager loaded dari Vapor
+        case techStackIDs = "tech_stack_ids" // Digunakan untuk DTO
+    }
+}
+
+// Model bantuan tetap perlu buat Delete
+struct EmptyResponse: Codable {}
