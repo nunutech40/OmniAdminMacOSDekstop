@@ -7,20 +7,37 @@
 
 import Foundation
 
+/// `APIConstants` mengelola konfigurasi dasar koneksi API.
+/// Menggunakan Conditional Compilation untuk memisahkan jalur data antara tahap pengembangan dan produksi.
 struct APIConstants {
-    // Ganti ke IP Server lo jika ngetes dari real device
-    static let baseURL = "http://157.10.161.215:8080"
     
+    /// Alamat utama server yang dipilih secara otomatis berdasarkan Build Configuration.
+    ///
+    /// - **Debug Mode (Run):** Menggunakan Port 8081 yang terhubung ke database `omni_db_dev`.
+    /// - **Release Mode (Archive):** Menggunakan Port 8080 yang terhubung ke database production `omni_db`.
+    static var baseURL: String {
+        #if DEBUG
+        // Jalur ini aktif ketika aplikasi dijalankan melalui Xcode (Cmd + R)
+        // Memastikan aktivitas testing tidak mengotori data asli di production.
+        return "http://157.10.161.215:8081"
+        #else
+        // Jalur ini aktif ketika aplikasi di-Archive atau di-distribusikan ke user.
+        // Mengarah ke server stabil dengan database utama.
+        return "http://157.10.161.215:8080"
+        #endif
+    }
+    
+    /// Daftar lengkap endpoint API yang tersedia di server OmniAdmin.
     struct Endpoints {
-        // Users / Auth
+        // MARK: - Users / Auth
         static let login = "/users/login"
         static let register = "/users/register"
         static let me = "/users/me"
         
-        // Portfolios
+        // MARK: - Portfolios
         static let portfolios = "/portfolios"
         
-        // Tech Stacks
+        // MARK: - Tech Stacks
         static let techs = "/techs"
     }
 }
