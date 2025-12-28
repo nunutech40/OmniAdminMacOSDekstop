@@ -11,25 +11,32 @@ struct TechStack: Codable, Identifiable, Hashable {
     let id: UUID
     var name: String
 }
-
 struct Project: Codable, Identifiable, Hashable {
     let id: UUID
     var title: String
+    var shortDesc: String
     var description: String
     var category: String
-    var url: String
     var isHero: Bool
-    // Update: Backend lo mengembalikan objek TechStack, bukan String
     var techStacks: [TechStack]
     
-    // Properti bantuan saat mengirim data (Create/Update) ke Vapor
+    // Sesuaikan dengan database Vapor
+    var linkGithub: String?
+    var linkDemo: String?
+    var linkStore: String?
+    var thumbnailUrl: String?
+    
     var techStackIDs: [UUID]?
 
     enum CodingKeys: String, CodingKey {
         case id, title, description, category, isHero
-        case url = "url" // Sesuaikan dengan field di PortfolioController
-        case techStacks = "tech_stacks" // Eager loaded dari Vapor
-        case techStackIDs = "tech_stack_ids" // Digunakan untuk DTO
+        case shortDesc = "short_desc"
+        case techStacks = "tech_stacks"
+        case techStackIDs = "tech_stack_ids"
+        case linkGithub = "link_github"
+        case linkDemo = "link_demo"
+        case linkStore = "link_store"
+        case thumbnailUrl = "thumbnail_url"
     }
 }
 

@@ -38,7 +38,7 @@ final class Injection {
     
     // Di dalam class dependency manager kamu
     func provideLocalPersistence() -> LocalPersistenceProtocol {
-        return LocalPersistence() // Mengembalikan implementasi UserDefaults tadi
+        return localStorage
     }
     
     func providePortfolioRepository() -> PortfolioRepositoryProtocol {

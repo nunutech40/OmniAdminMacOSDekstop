@@ -4,7 +4,6 @@
 //
 //  Created by Nunu Nugraha on 25/12/25.
 //
-
 import SwiftUI
 
 // MARK: - Admin Module Enum
@@ -22,21 +21,23 @@ struct MainDashboard: View {
     @State private var selectedProjectID: UUID?
     @State private var searchText: String = ""
     
-    // Flag buat nentuin apakah kolom kanan nampilin Form Tambah atau Editor
+    // Flag untuk trigger Sheet (Mode Tambah)
     @State private var isAddingNewProject = false
     
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            // KOLOM 1: SIDEBAR
+            // MARK: - KOLOM 1: SIDEBAR
             sidebarContent
+                .navigationSplitViewColumnWidth(min: 200, ideal: 250)
+            
         } content: {
-            // KOLOM 2: LIST (Kolom Tengah)
+            // MARK: - KOLOM 2: LIST (Kolom Tengah)
             VStack {
                 switch selectedModule {
                 case .portfolios:
                     PortfolioListView(projects: filteredProjects, selectedID: $selectedProjectID)
-                        // Saat pilih project, mode "Tambah" dimatiin biar gak bentrok
                         .onChange(of: selectedProjectID) { _, newValue in
+                            // Kalau user pilih project di list, tutup mode "Tambah"
                             if newValue != nil { isAddingNewProject = false }
                         }
                 case .settings:
@@ -45,59 +46,76 @@ struct MainDashboard: View {
                     Text("Select a module")
                 }
             }
-            // --- UKURAN TETEP SESUAI REQUEST LO (350 - 400) ---
             .navigationSplitViewColumnWidth(min: 350, ideal: 400)
             .navigationTitle("OmniAdmin")
-            // Searchable ditaruh di sini agar muncul di kolom tengah
-            .searchable(text: $searchText, placement: .toolbar, prompt: "Search...")
+            .searchable(text: $searchText, placement: .toolbar, prompt: "Search project...")
             
         } detail: {
-            // KOLOM 3: DETAIL/EDITOR (Kolom Kanan)
+            // MARK: - KOLOM 3: DETAIL (Unified Editor)
             Group {
-                if isAddingNewProject {
-                    // Tampilan Form Tambah (Bukan Modal)
-                    AddProjectInlineView(isAdding: $isAddingNewProject) {
+                if let projectID = selectedProjectID,
+                   let project = viewModel.projects.first(where: { $0.id == projectID }) {
+                    
+                    // MODE EDIT: Kirim projectToEdit, isPresented pake constant true
+                    AddProjectView(
+                        isPresented: .constant(true),
+                        projectToEdit: project
+                    ) {
                         Task { await viewModel.loadProjects() }
                     }
-                } else if let projectID = selectedProjectID,
-                          let project = viewModel.projects.first(where: { $0.id == projectID }) {
-                    // Tampilan Editor
-                    ProjectEditorView(project: project)
+                    .id(project.id) // Paksa refresh view saat ganti pilihan project
+                    
                 } else {
                     ContentUnavailableView(
                         "No Project Selected",
                         systemImage: "doc.text.magnifyingglass",
-                        description: Text("Silahkan pilih project atau klik + untuk menambah.")
+                        description: Text("Silahkan pilih project di kolom tengah atau klik + untuk menambah.")
                     )
                 }
             }
         }
-        // --- INI SOLUSI KLIK & DOUBLE PLUS ---
-        // Pindahin .toolbar ke level Root (NavigationSplitView)
-        // Ini memastikan tombol cuma SATU dan aksi Klik-nya 100% jalan.
+        // MARK: - SHEET: MODE TAMBAH
+        .sheet(isPresented: $isAddingNewProject) {
+            // MODE TAMBAH: projectToEdit di-set nil
+            AddProjectView(
+                isPresented: $isAddingNewProject,
+                projectToEdit: nil
+            ) {
+                Task { await viewModel.loadProjects() }
+            }
+            .frame(minWidth: 550, minHeight: 650)
+        }
+        // MARK: - TOOLBAR
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    print("Plus Button Clicked!") // Cek di console Xcode lo
-                    selectedProjectID = nil // Deselect project lama
-                    isAddingNewProject = true // Trigger form di kolom kanan
+                    selectedProjectID = nil // Reset pilihan list
+                    isAddingNewProject = true // Buka sheet tambah
                 } label: {
                     Image(systemName: "plus")
                 }
                 .help("Add New Project")
             }
         }
-        // UKURAN WINDOW UTAMA TETEP 1000x650
+        // WINDOW SPECS
         .frame(minWidth: 1000, minHeight: 650)
         .task {
             await viewModel.loadProjects()
         }
     }
     
+    // MARK: - Logic Helpers
     var filteredProjects: [Project] {
-        searchText.isEmpty ? viewModel.projects : viewModel.projects.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
+        if searchText.isEmpty {
+            return viewModel.projects
+        } else {
+            return viewModel.projects.filter {
+                $0.title.localizedCaseInsensitiveContains(searchText)
+            }
+        }
     }
     
+    // MARK: - Sidebar Component
     private var sidebarContent: some View {
         List(selection: $selectedModule) {
             Section("Management") {
@@ -111,11 +129,10 @@ struct MainDashboard: View {
                 }
             }
         }
-        .navigationSplitViewColumnWidth(min: 200, ideal: 250)
         .listStyle(.sidebar)
-        // Hapus .navigationTitle di sini biar gak bikin toolbar double
     }
     
+    // MARK: - Settings Component
     private var settingsView: some View {
         Form {
             Section("User Profile") {
@@ -123,7 +140,9 @@ struct MainDashboard: View {
                 LabeledContent("Role", value: authManager.currentUser?.role ?? "Admin")
             }
             Section {
-                Button(role: .destructive) { authManager.logout() } label: {
+                Button(role: .destructive) {
+                    authManager.logout()
+                } label: {
                     Label("Logout", systemImage: "rectangle.portrait.and.arrow.right")
                 }
             }

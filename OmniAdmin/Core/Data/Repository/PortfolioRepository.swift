@@ -9,60 +9,60 @@ import Foundation
 
 protocol PortfolioRepositoryProtocol {
     func fetchAll() async throws -> [Project]
-    func createProject(title: String, description: String, link: String, category: String, techIDs: [UUID]) async throws -> Project
+    func createProject(
+        title: String,
+        shortDesc: String,
+        description: String,
+        category: String,
+        linkGithub: String,
+        linkDemo: String,
+        isHero: Bool,
+        techIDs: [UUID]
+    ) async throws -> Project
     func updateProject(_ project: Project) async throws -> Project
     func deleteProject(id: UUID) async throws
 }
 
 final class PortfolioRepository: PortfolioRepositoryProtocol {
     private let client: APIClient
-    // Storage dibuang karena "porto langsung ke be"
     
     init(client: APIClient) {
         self.client = client
     }
     
     func fetchAll() async throws -> [Project] {
-        return try await client.request(
-            APIConstants.Endpoints.portfolios,
-            method: .get
-        )
+        return try await client.request(APIConstants.Endpoints.portfolios, method: .get)
     }
     
-    func createProject(title: String, description: String, link: String, category: String, techIDs: [UUID]) async throws -> Project {
+    func createProject(title: String, shortDesc: String, description: String, category: String, linkGithub: String, linkDemo: String, isHero: Bool, techIDs: [UUID]) async throws -> Project {
         let parameters: [String: Any] = [
             "title": title,
+            "slug": title.lowercased().replacingOccurrences(of: " ", with: "-"),
+            "short_desc": shortDesc,
             "description": description,
-            "url": link,
             "category": category,
-            "is_hero": false,
+            "link_github": linkGithub,
+            "link_demo": linkDemo,
+            "is_hero": isHero,
             "tech_stack_ids": techIDs.map { $0.uuidString }
         ]
-        
-        return try await client.request(
-            APIConstants.Endpoints.portfolios,
-            method: .post,
-            parameters: parameters
-        )
+        return try await client.request(APIConstants.Endpoints.portfolios, method: .post, parameters: parameters)
     }
     
     func updateProject(_ project: Project) async throws -> Project {
-        let techIDs = project.techStackIDs?.map { $0.uuidString } ?? []
         let parameters: [String: Any] = [
             "title": project.title,
+            "slug": project.title.lowercased().replacingOccurrences(of: " ", with: "-"),
+            "short_desc": project.shortDesc,
             "description": project.description,
-            "url": project.url,
             "category": project.category,
+            "link_github": project.linkGithub ?? "",
+            "link_demo": project.linkDemo ?? "",
             "is_hero": project.isHero,
-            "tech_stack_ids": techIDs
+            "tech_stack_ids": project.techStackIDs ?? []
         ]
-        
         let endpoint = "\(APIConstants.Endpoints.portfolios)/\(project.id.uuidString)"
-        return try await client.request(
-            endpoint,
-            method: .put,
-            parameters: parameters
-        )
+        return try await client.request(endpoint, method: .put, parameters: parameters)
     }
     
     func deleteProject(id: UUID) async throws {
