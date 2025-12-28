@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AddProjectView: View {
+    @Environment(\.dismiss) private var dismiss // Cara paling aman buat nutup modal
     @Binding var isPresented: Bool
     var onComplete: () -> Void
     @State private var viewModel: AddProjectViewModel
@@ -24,7 +25,7 @@ struct AddProjectView: View {
                 .font(.system(size: 28, weight: .bold)).padding(.bottom, 20)
 
             Form {
-                Section("Information") {
+                Section("Core Information") {
                     TextField("Title", text: $viewModel.title)
                     TextField("Short Description", text: $viewModel.shortDesc)
                     Picker("Category", selection: $viewModel.category) {
@@ -33,41 +34,43 @@ struct AddProjectView: View {
                     Toggle("Feature as Hero", isOn: $viewModel.isHero)
                 }
 
-                Section("Links") {
+                Section("Links & Media") {
                     TextField("GitHub URL", text: $viewModel.linkGithub)
                     TextField("Demo URL", text: $viewModel.linkDemo)
+                    TextField("Store URL", text: $viewModel.linkStore)      // BARU
+                    TextField("Thumbnail URL", text: $viewModel.thumbnailUrl) // BARU
+                }
+
+                Section("Detailed Description") {
+                    TextEditor(text: $viewModel.description)
+                        .frame(height: 100)
                 }
 
                 Section("Tech Stack") {
                     HStack {
                         TextField("New tech...", text: $viewModel.newTechName)
+                            .onSubmit { Task { await viewModel.createTech() } }
                         Button { Task { await viewModel.createTech() } } label: { Image(systemName: "plus.circle.fill") }
                     }
                     techChipsGrid
                 }
             }
             .formStyle(.grouped)
-            .disabled(viewModel.isSaving) // Disable form saat loading
+            .disabled(viewModel.isSaving)
 
-            // FOOTER DENGAN LOADING INDICATOR
+            // FOOTER DENGAN LOGIC DISMISS YANG BENAR
             HStack {
                 if viewModel.projectToEdit == nil {
-                    Button("Cancel") { isPresented = false }.buttonStyle(.plain)
+                    Button("Cancel") { dismiss() }.buttonStyle(.plain)
                 }
                 Spacer()
                 
                 if viewModel.isSaving {
-                    ProgressView().controlSize(.small) // INI LOADINGNYA
-                        .padding(.trailing, 10)
+                    ProgressView().controlSize(.small).padding(.trailing, 10)
                 }
                 
                 Button(viewModel.projectToEdit == nil ? "Save Project" : "Update Changes") {
-                    Task {
-                        await viewModel.save {
-                            onComplete()
-                            isPresented = false // INI YANG NUTUP HALAMAN
-                        }
-                    }
+                    handleSave()
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(viewModel.isSaving || viewModel.title.isEmpty)
@@ -78,6 +81,18 @@ struct AddProjectView: View {
         .task { await viewModel.loadTechs() }
     }
 
+    // Logic penanganan save dan tutup halaman
+    private func handleSave() {
+        Task {
+            let success = await viewModel.save()
+            if success {
+                onComplete() // Refresh list di dashboard
+                dismiss()    // Tutup sheet
+                isPresented = false // Backup untuk memastikan binding berubah
+            }
+        }
+    }
+
     private var techChipsGrid: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 90))], spacing: 8) {
             ForEach(viewModel.masterTechs) { tech in
@@ -85,6 +100,7 @@ struct AddProjectView: View {
                 Text(tech.name)
                     .font(.caption).padding(8)
                     .background(isSelected ? Color.accentColor : Color.gray.opacity(0.2))
+                    .foregroundColor(isSelected ? .white : .primary)
                     .cornerRadius(10)
                     .onTapGesture {
                         if isSelected { viewModel.selectedTechIDs.remove(tech.id) }
@@ -92,5 +108,6 @@ struct AddProjectView: View {
                     }
             }
         }
+        .padding(.vertical, 10)
     }
 }

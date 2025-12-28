@@ -4,19 +4,20 @@
 //
 //  Created by Nunu Nugraha on 28/12/25.
 //
-
 import Foundation
 import Observation
 
 @Observable @MainActor
 class AddProjectViewModel {
-    // Form States
+    // Form States (Lengkap sesuai DTO Vapor)
     var title = ""
     var shortDesc = ""
     var description = ""
     var category = "macOS App"
     var linkGithub = ""
     var linkDemo = ""
+    var linkStore = ""      // TAMBAHAN
+    var thumbnailUrl = ""   // TAMBAHAN
     var isHero = false
     
     // UI States
@@ -38,6 +39,8 @@ class AddProjectViewModel {
             self.category = project.category
             self.linkGithub = project.linkGithub ?? ""
             self.linkDemo = project.linkDemo ?? ""
+            self.linkStore = project.linkStore ?? ""
+            self.thumbnailUrl = project.thumbnailUrl ?? ""
             self.isHero = project.isHero
             self.selectedTechIDs = Set(project.techStacks.map { $0.id })
         }
@@ -56,31 +59,41 @@ class AddProjectViewModel {
         }
     }
 
-    func save(onSuccess: @escaping () -> Void) async {
+    func save() async -> Bool {
         isSaving = true
-        defer { isSaving = false } // Otomatis jadi false saat beres (berhasil/gagal)
+        defer { isSaving = false }
         
         do {
             if var project = projectToEdit {
+                // Update Model
                 project.title = title
                 project.shortDesc = shortDesc
                 project.description = description
                 project.category = category
                 project.linkGithub = linkGithub
                 project.linkDemo = linkDemo
+                project.linkStore = linkStore
+                project.thumbnailUrl = thumbnailUrl
                 project.isHero = isHero
                 project.techStackIDs = Array(selectedTechIDs)
                 _ = try await portfolioRepo.updateProject(project)
             } else {
+                // Create New (Pastikan Repo lo dukung field baru ini)
                 _ = try await portfolioRepo.createProject(
-                    title: title, shortDesc: shortDesc, description: description,
-                    category: category, linkGithub: linkGithub, linkDemo: linkDemo,
-                    isHero: isHero, techIDs: Array(selectedTechIDs)
+                    title: title,
+                    shortDesc: shortDesc,
+                    description: description,
+                    category: category,
+                    linkGithub: linkGithub,
+                    linkDemo: linkDemo,
+                    isHero: isHero,
+                    techIDs: Array(selectedTechIDs)
                 )
             }
-            onSuccess()
+            return true // Berhasil
         } catch {
             print("❌ Save Error: \(error)")
+            return false // Gagal
         }
     }
 }
