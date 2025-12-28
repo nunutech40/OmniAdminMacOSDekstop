@@ -9,19 +9,22 @@ import Observation
 
 @Observable @MainActor
 class AddProjectViewModel {
-    // Form States (Lengkap sesuai DTO Vapor)
+    // Form States
     var title = ""
     var shortDesc = ""
     var description = ""
     var category = "macOS App"
     var linkGithub = ""
     var linkDemo = ""
-    var linkStore = ""      // TAMBAHAN
-    var thumbnailUrl = ""   // TAMBAHAN
+    var linkStore = ""
+    var thumbnailUrl = ""
     var isHero = false
     
     // UI States
     var isSaving = false
+    var showSuccessAlert = false // Buat nampilin notif berhasil
+    var errorMessage: String? = nil
+    
     var masterTechs: [TechStack] = []
     var selectedTechIDs: Set<UUID> = []
     var newTechName = ""
@@ -34,15 +37,15 @@ class AddProjectViewModel {
         self.projectToEdit = projectToEdit
         if let project = projectToEdit {
             self.title = project.title
-            self.shortDesc = project.shortDesc
-            self.description = project.description
-            self.category = project.category
+            self.shortDesc = project.shortDesc ?? ""
+            self.description = project.description ?? ""
+            self.category = project.category ?? ""
             self.linkGithub = project.linkGithub ?? ""
             self.linkDemo = project.linkDemo ?? ""
             self.linkStore = project.linkStore ?? ""
             self.thumbnailUrl = project.thumbnailUrl ?? ""
             self.isHero = project.isHero
-            self.selectedTechIDs = Set(project.techStacks.map { $0.id })
+            self.selectedTechIDs = Set(project.techStacks?.map { $0.id } ?? [])
         }
     }
 
@@ -59,13 +62,12 @@ class AddProjectViewModel {
         }
     }
 
-    func save() async -> Bool {
+    func save() async {
         isSaving = true
-        defer { isSaving = false }
+        errorMessage = nil
         
         do {
             if var project = projectToEdit {
-                // Update Model
                 project.title = title
                 project.shortDesc = shortDesc
                 project.description = description
@@ -78,22 +80,18 @@ class AddProjectViewModel {
                 project.techStackIDs = Array(selectedTechIDs)
                 _ = try await portfolioRepo.updateProject(project)
             } else {
-                // Create New (Pastikan Repo lo dukung field baru ini)
                 _ = try await portfolioRepo.createProject(
-                    title: title,
-                    shortDesc: shortDesc,
-                    description: description,
-                    category: category,
-                    linkGithub: linkGithub,
-                    linkDemo: linkDemo,
-                    isHero: isHero,
-                    techIDs: Array(selectedTechIDs)
+                    title: title, shortDesc: shortDesc, description: description,
+                    category: category, linkGithub: linkGithub, linkDemo: linkDemo,
+                    isHero: isHero, techIDs: Array(selectedTechIDs)
                 )
             }
-            return true // Berhasil
+            isSaving = false
+            showSuccessAlert = true // Trigger Alert Sukses
         } catch {
             print("❌ Save Error: \(error)")
-            return false // Gagal
+            errorMessage = error.localizedDescription
+            isSaving = false
         }
     }
 }

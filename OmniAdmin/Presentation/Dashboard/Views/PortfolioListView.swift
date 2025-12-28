@@ -8,27 +8,34 @@
 import SwiftUI
 
 struct PortfolioListView: View {
-    let projects: [Project] // Terima data hasil filter dari Dashboard
+    let projects: [Project]
     @Binding var selectedID: UUID?
     @State private var sortOrder = [KeyPathComparator(\Project.title)]
     @State private var sortedProjects: [Project] = []
 
     var body: some View {
         Table(sortedProjects, selection: $selectedID, sortOrder: $sortOrder) {
+            // Kolom ini aman karena Title bukan optional
             TableColumn("Title", value: \.title)
-            TableColumn("Category", value: \.category)
+            
+            // FIX: Jangan pake 'value:', pake closure buat handle optional category
+            TableColumn("Category") { project in
+                Text(project.category ?? "-")
+            }
+            
             TableColumn("Hero") { project in
                 Image(systemName: project.isHero ? "star.fill" : "star")
                     .foregroundColor(project.isHero ? .yellow : .secondary)
             }
             .width(50)
         }
-        // Update tampilan saat data dari parent atau sort order berubah
-        .onAppear { sortedProjects = projects }
-        .onChange(of: projects) { sortedProjects = projects.sorted(using: sortOrder) }
-        .onChange(of: sortOrder) { sortedProjects.sort(using: $1) }
-        .toolbar {
-            Button(action: {}) { Label("Add Project", systemImage: "plus") }
+        // Update data saat data baru masuk
+        .onChange(of: projects, initial: true) { _, newValue in
+            sortedProjects = newValue.sorted(using: sortOrder)
+        }
+        // Update saat user klik header table buat sort
+        .onChange(of: sortOrder) { _, newOrder in
+            sortedProjects.sort(using: newOrder)
         }
     }
 }

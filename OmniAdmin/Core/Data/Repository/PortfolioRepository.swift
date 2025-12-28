@@ -35,31 +35,31 @@ final class PortfolioRepository: PortfolioRepositoryProtocol {
     }
     
     func createProject(title: String, shortDesc: String, description: String, category: String, linkGithub: String, linkDemo: String, isHero: Bool, techIDs: [UUID]) async throws -> Project {
-        let parameters: [String: Any] = [
+        let parameters: [String: Any?] = [
             "title": title,
             "slug": title.lowercased().replacingOccurrences(of: " ", with: "-"),
-            "short_desc": shortDesc,
-            "description": description,
-            "category": category,
-            "link_github": linkGithub,
-            "link_demo": linkDemo,
-            "is_hero": isHero,
-            "tech_stack_ids": techIDs.map { $0.uuidString }
+            "shortDesc": shortDesc.isEmpty ? nil : shortDesc, // Kirim nil kalo kosong
+            "description": description.isEmpty ? nil : description,
+            "category": category.isEmpty ? nil : category,
+            "linkGithub": linkGithub.isEmpty ? nil : linkGithub,
+            "linkDemo": linkDemo.isEmpty ? nil : linkDemo,
+            "isHero": isHero,
+            "techStackIDs": techIDs.map { $0.uuidString }
         ]
         return try await client.request(APIConstants.Endpoints.portfolios, method: .post, parameters: parameters)
     }
     
     func updateProject(_ project: Project) async throws -> Project {
-        let parameters: [String: Any] = [
+        let parameters: [String: Any?] = [
             "title": project.title,
             "slug": project.title.lowercased().replacingOccurrences(of: " ", with: "-"),
-            "short_desc": project.shortDesc,
+            "shortDesc": project.shortDesc,
             "description": project.description,
             "category": project.category,
-            "link_github": project.linkGithub ?? "",
-            "link_demo": project.linkDemo ?? "",
-            "is_hero": project.isHero,
-            "tech_stack_ids": project.techStackIDs ?? []
+            "linkGithub": project.linkGithub,
+            "linkDemo": project.linkDemo,
+            "isHero": project.isHero,
+            "techStackIDs": project.techStackIDs ?? []
         ]
         let endpoint = "\(APIConstants.Endpoints.portfolios)/\(project.id.uuidString)"
         return try await client.request(endpoint, method: .put, parameters: parameters)

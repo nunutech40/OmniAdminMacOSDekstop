@@ -4,11 +4,10 @@
 //
 //  Created by Nunu Nugraha on 27/12/25.
 //
-
 import SwiftUI
 
 struct AddProjectView: View {
-    @Environment(\.dismiss) private var dismiss // Cara paling aman buat nutup modal
+    @Environment(\.dismiss) private var dismiss
     @Binding var isPresented: Bool
     var onComplete: () -> Void
     @State private var viewModel: AddProjectViewModel
@@ -20,76 +19,94 @@ struct AddProjectView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text(viewModel.projectToEdit == nil ? "Create New Project" : "Edit Project")
-                .font(.system(size: 28, weight: .bold)).padding(.bottom, 20)
+        ZStack {
+            VStack(alignment: .leading, spacing: 0) {
+                Text(viewModel.projectToEdit == nil ? "Create New Project" : "Edit Project")
+                    .font(.system(size: 28, weight: .bold)).padding(.bottom, 20)
 
-            Form {
-                Section("Core Information") {
-                    TextField("Title", text: $viewModel.title)
-                    TextField("Short Description", text: $viewModel.shortDesc)
-                    Picker("Category", selection: $viewModel.category) {
-                        ForEach(["macOS App", "iOS App", "Web", "Networking"], id: \.self) { Text($0) }
+                Form {
+                    Section("Core Information") {
+                        TextField("Title", text: $viewModel.title)
+                        TextField("Short Description", text: $viewModel.shortDesc)
+                        Picker("Category", selection: $viewModel.category) {
+                            ForEach(["macOS App", "iOS App", "Web", "Networking"], id: \.self) { Text($0) }
+                        }
+                        Toggle("Feature as Hero", isOn: $viewModel.isHero)
                     }
-                    Toggle("Feature as Hero", isOn: $viewModel.isHero)
-                }
 
-                Section("Links & Media") {
-                    TextField("GitHub URL", text: $viewModel.linkGithub)
-                    TextField("Demo URL", text: $viewModel.linkDemo)
-                    TextField("Store URL", text: $viewModel.linkStore)      // BARU
-                    TextField("Thumbnail URL", text: $viewModel.thumbnailUrl) // BARU
-                }
-
-                Section("Detailed Description") {
-                    TextEditor(text: $viewModel.description)
-                        .frame(height: 100)
-                }
-
-                Section("Tech Stack") {
-                    HStack {
-                        TextField("New tech...", text: $viewModel.newTechName)
-                            .onSubmit { Task { await viewModel.createTech() } }
-                        Button { Task { await viewModel.createTech() } } label: { Image(systemName: "plus.circle.fill") }
+                    Section("Links & Media") {
+                        TextField("GitHub URL", text: $viewModel.linkGithub)
+                        TextField("Demo URL", text: $viewModel.linkDemo)
+                        TextField("Store URL", text: $viewModel.linkStore)
+                        TextField("Thumbnail URL", text: $viewModel.thumbnailUrl)
                     }
-                    techChipsGrid
+
+                    Section("Detailed Description") {
+                        TextEditor(text: $viewModel.description).frame(height: 100)
+                    }
+
+                    Section("Tech Stack") {
+                        HStack {
+                            TextField("New tech...", text: $viewModel.newTechName)
+                                .onSubmit { Task { await viewModel.createTech() } }
+                            Button { Task { await viewModel.createTech() } } label: { Image(systemName: "plus.circle.fill") }
+                        }
+                        techChipsGrid
+                    }
+                }
+                .formStyle(.grouped)
+
+                // FOOTER
+                HStack {
+                    if viewModel.projectToEdit == nil {
+                        Button("Cancel") { dismiss() }.buttonStyle(.plain)
+                    }
+                    Spacer()
+                    
+                    Button(viewModel.projectToEdit == nil ? "Save Project" : "Update Changes") {
+                        Task { await viewModel.save() }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(viewModel.isSaving || viewModel.title.isEmpty)
+                }
+                .padding(.top, 20)
+            }
+            .padding(30)
+            
+            // --- LOADING OVERLAY (Blokir Interaksi) ---
+            if viewModel.isSaving {
+                ZStack {
+                    Color.black.opacity(0.15)
+                        .edgesIgnoringSafeArea(.all)
+                    VStack(spacing: 12) {
+                        ProgressView()
+                            .controlSize(.large)
+                        Text("Saving Project...").font(.caption).bold()
+                    }
+                    .padding(20)
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(12)
                 }
             }
-            .formStyle(.grouped)
-            .disabled(viewModel.isSaving)
-
-            // FOOTER DENGAN LOGIC DISMISS YANG BENAR
-            HStack {
-                if viewModel.projectToEdit == nil {
-                    Button("Cancel") { dismiss() }.buttonStyle(.plain)
-                }
-                Spacer()
-                
-                if viewModel.isSaving {
-                    ProgressView().controlSize(.small).padding(.trailing, 10)
-                }
-                
-                Button(viewModel.projectToEdit == nil ? "Save Project" : "Update Changes") {
-                    handleSave()
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(viewModel.isSaving || viewModel.title.isEmpty)
-            }
-            .padding(.top, 20)
         }
-        .padding(30)
         .task { await viewModel.loadTechs() }
-    }
-
-    // Logic penanganan save dan tutup halaman
-    private func handleSave() {
-        Task {
-            let success = await viewModel.save()
-            if success {
-                onComplete() // Refresh list di dashboard
-                dismiss()    // Tutup sheet
-                isPresented = false // Backup untuk memastikan binding berubah
+        // --- ALERT SUKSES ---
+        .alert("Success", isPresented: $viewModel.showSuccessAlert) {
+            Button("OK") {
+                onComplete() // Refresh dashboard
+                dismiss()    // Tutup halaman
             }
+        } message: {
+            Text("Your project has been saved successfully to the database.")
+        }
+        // --- ALERT ERROR ---
+        .alert("Error", isPresented: Binding(
+            get: { viewModel.errorMessage != nil },
+            set: { _ in viewModel.errorMessage = nil }
+        )) {
+            Button("Got it") { }
+        } message: {
+            Text(viewModel.errorMessage ?? "Unknown error")
         }
     }
 

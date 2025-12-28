@@ -11,16 +11,16 @@ struct TechStack: Codable, Identifiable, Hashable {
     let id: UUID
     var name: String
 }
+
 struct Project: Codable, Identifiable, Hashable {
     let id: UUID
     var title: String
-    var shortDesc: String
-    var description: String
-    var category: String
+    var shortDesc: String?
+    var description: String?
+    var category: String?
     var isHero: Bool
-    var techStacks: [TechStack]
+    var techStacks: [TechStack]?
     
-    // Sesuaikan dengan database Vapor
     var linkGithub: String?
     var linkDemo: String?
     var linkStore: String?
@@ -30,13 +30,14 @@ struct Project: Codable, Identifiable, Hashable {
 
     enum CodingKeys: String, CodingKey {
         case id, title, description, category, isHero
-        case shortDesc = "short_desc"
-        case techStacks = "tech_stacks"
-        case techStackIDs = "tech_stack_ids"
-        case linkGithub = "link_github"
-        case linkDemo = "link_demo"
-        case linkStore = "link_store"
-        case thumbnailUrl = "thumbnail_url"
+        // FIX: Samakan dengan nama variabel di Vapor (CamelCase)
+        case shortDesc = "shortDesc"
+        case techStacks = "techStacks"
+        case linkGithub = "linkGithub"
+        case linkDemo = "linkDemo"
+        case linkStore = "linkStore"
+        case thumbnailUrl = "thumbnailUrl"
+        case techStackIDs = "techStackIDs"
     }
 }
 
