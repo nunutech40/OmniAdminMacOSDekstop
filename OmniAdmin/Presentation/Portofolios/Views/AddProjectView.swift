@@ -116,33 +116,43 @@ private extension AddProjectView {
                 Button {
                     showFilePicker = true
                 } label: {
-                    Group {
+                    ZStack {
                         if let image = viewModel.previewImage {
-                            // 1. Tampilkan Gambar Lokal (yang baru di-browse)
+                            // 1. Prioritas Utama: Gambar yang baru dipilih user (Local)
                             Image(nsImage: image)
                                 .resizable()
+                                .aspectRatio(contentMode: .fill)
                         } else if !viewModel.thumbnailUrl.isEmpty {
-                            // 2. Tampilkan Gambar dari Server (untuk Edit mode)
-                            AsyncImage(url: URL(string: "http://157.10.161.215:8080\(viewModel.thumbnailUrl)")) { img in
-                                img.resizable()
-                            } placeholder: {
-                                ProgressView()
+                            // 2. Prioritas Kedua: Gambar dari Server (Remote)
+                            // Gunakan APIConstants.baseURL + path dari database
+                            let fullURL = APIConstants.baseURL + (viewModel.thumbnailUrl.hasPrefix("/") ? "" : "/") + viewModel.thumbnailUrl
+                            
+                            AsyncImage(url: URL(string: fullURL)) { phase in
+                                switch phase {
+                                case .success(let image):
+                                    image.resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                case .failure:
+                                    // Kalau URL mati atau 404, tampilkan placeholder, jangan muter
+                                    imagePlaceholder
+                                case .empty:
+                                    // Sedang loading
+                                    ProgressView()
+                                        .scaleEffect(0.8)
+                                @unknown default:
+                                    imagePlaceholder
+                                }
                             }
                         } else {
-                            // 3. Placeholder jika benar-benar kosong
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1))
-                                VStack {
-                                    Image(systemName: "photo.badge.plus").font(.largeTitle)
-                                    Text("Click to Browse Image")
-                                }.foregroundColor(.gray)
-                            }
+                            // 3. Tampilkan Placeholder jika link kosong
+                            imagePlaceholder
                         }
                     }
-                    .aspectRatio(contentMode: .fill)
                     .frame(height: 150)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.gray.opacity(0.1))
                     .cornerRadius(8)
-                    .clipped() // Agar gambar nggak keluar dari frame
+                    .clipped()
                 }
                 .buttonStyle(.plain)
             }
@@ -151,6 +161,15 @@ private extension AddProjectView {
             TextField("Demo URL", text: $viewModel.linkDemo)
             TextField("Store URL", text: $viewModel.linkStore)
         }
+    }
+    
+    // Helper Placeholder biar kodenya gak duplikat
+    private var imagePlaceholder: some View {
+        VStack {
+            Image(systemName: "photo.badge.plus").font(.largeTitle)
+            Text("Click to Browse Image").font(.caption)
+        }
+        .foregroundColor(.gray)
     }
     
     private var detailedDescriptionSection: some View {
