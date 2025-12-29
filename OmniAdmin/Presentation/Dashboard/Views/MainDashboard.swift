@@ -20,8 +20,9 @@ struct MainDashboard: View {
     @State private var selectedModule: AdminModule? = .portfolios
     @State private var searchText: String = ""
     @State private var isAddingNewProject = false
-    @State private var projectToEdit: Project? // Untuk trigger Edit Sheet
-    
+    @State private var projectToEdit: Project?
+    @State private var showDeleteConfirmation = false
+    @State private var projectToDelete: Project?
     // Base URL Server lo
     private let serverBaseURL = "http://157.10.161.215:8080"
 
@@ -57,6 +58,18 @@ struct MainDashboard: View {
                 Task { await viewModel.loadProjects() }
             }
             .frame(minWidth: 600, minHeight: 700)
+        }
+        .confirmationDialog(
+            "Are you sure?",
+            isPresented: $showDeleteConfirmation,
+            presenting: projectToDelete
+        ) { project in
+            Button("Delete \(project.title)", role: .destructive) {
+                Task { await viewModel.deleteProject(id: project.id) }
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: { project in
+            Text("This action cannot be undone. All data related to '\(project.title)' will be permanently removed.")
         }
         .task { await viewModel.loadProjects() }
     }
@@ -137,7 +150,8 @@ private extension MainDashboard {
                         .buttonStyle(.plain)
                         
                         Button(role: .destructive) {
-                            // Action delete taruh sini
+                            self.projectToDelete = project
+                            self.showDeleteConfirmation = true
                         } label: {
                             Image(systemName: "trash.fill")
                         }

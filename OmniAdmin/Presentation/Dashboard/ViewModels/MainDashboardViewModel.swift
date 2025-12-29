@@ -23,12 +23,34 @@ final class MainDashboardViewModel {
     
     func loadProjects() async {
         isLoading = true
+        do {
+            let results = try await repository.fetchAll()
+            self.projects = results
+            print("✅ Berhasil Load: \(results.count) data")
+        } catch let decodingError as DecodingError {
+            // INI BAKAL NGASIH TAU FIELD MANA YANG BIKIN MATI
+            print("❌ DECODING ERROR: \(decodingError)")
+        } catch {
+            print("❌ GENERAL ERROR: \(error)")
+        }
+        isLoading = false
+    }
+    
+    func deleteProject(id: UUID) async {
+        isLoading = true
         errorMessage = nil
         
         do {
-            self.projects = try await repository.fetchAll()
+            // 1. Panggil API untuk hapus di server
+            try await repository.deleteProject(id: id)
+            
+            // 2. Optimistic Update: Hapus dari list local agar UI langsung berubah
+            self.projects.removeAll { $0.id == id }
+            
+            print("Project deleted successfully: \(id)")
         } catch {
-            self.errorMessage = "Gagal memuat data: \(error.localizedDescription)"
+            print("Delete Error: \(error)")
+            self.errorMessage = "Gagal menghapus data: \(error.localizedDescription)"
         }
         
         isLoading = false

@@ -22,6 +22,8 @@ struct AddProjectView: View {
     }
     
     var body: some View {
+        @Bindable var viewModel = viewModel
+        
         ZStack {
             mainContent
             

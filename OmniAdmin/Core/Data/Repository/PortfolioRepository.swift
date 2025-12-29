@@ -17,6 +17,7 @@ protocol PortfolioRepositoryProtocol {
         thumbnailUrl: String?,
         linkGithub: String,
         linkDemo: String,
+        linkStore: String,
         isHero: Bool,
         techIDs: [UUID]
     ) async throws -> Project
@@ -25,6 +26,7 @@ protocol PortfolioRepositoryProtocol {
 }
 
 final class PortfolioRepository: PortfolioRepositoryProtocol {
+    
     private let client: APIClient
     
     init(client: APIClient) {
@@ -43,6 +45,7 @@ final class PortfolioRepository: PortfolioRepositoryProtocol {
         thumbnailUrl: String?, // Terima URL String
         linkGithub: String,
         linkDemo: String,
+        linkStore: String,
         isHero: Bool,
         techIDs: [UUID]
     ) async throws -> Project {
@@ -56,6 +59,7 @@ final class PortfolioRepository: PortfolioRepositoryProtocol {
             "thumbnailUrl": thumbnailUrl, // Kirim URL hasil upload tadi
             "linkGithub": linkGithub.isEmpty ? nil : linkGithub,
             "linkDemo": linkDemo.isEmpty ? nil : linkDemo,
+            "linkStore": linkStore.isEmpty ? nil : linkStore,
             "isHero": isHero,
             "techStackIDs": techIDs.map { $0.uuidString }
         ]
@@ -70,11 +74,13 @@ final class PortfolioRepository: PortfolioRepositoryProtocol {
             "shortDesc": project.shortDesc,
             "description": project.description,
             "category": project.category,
-            "thumbnailUrl": project.thumbnailUrl, // Pastikan model Project lo punya field ini
+            "thumbnailUrl": project.thumbnailUrl,
             "linkGithub": project.linkGithub,
             "linkDemo": project.linkDemo,
+            "linkStore": project.linkStore,
             "isHero": project.isHero,
-            "techStackIDs": project.techStackIDs ?? []
+            // Pastikan di-map ke String kalau backend lo nerima string
+            "techStackIDs": project.techStackIDs?.map { $0.uuidString } ?? []
         ]
         
         let endpoint = "\(APIConstants.Endpoints.portfolios)/\(project.id.uuidString)"

@@ -69,8 +69,6 @@ class AddProjectViewModel {
         }
     }
     
-    // ... di dalam AddProjectViewModel ...
-    
     func save() async {
         isSaving = true
         errorMessage = nil
@@ -120,7 +118,7 @@ class AddProjectViewModel {
                     thumbnailUrl: thumbnailUrl,
                     linkGithub: linkGithub,
                     linkDemo: linkDemo,
-                    // linkStore: linkStore, // Tambahkan ini jika repo lo sudah di-update
+                    linkStore: linkStore,
                     isHero: isHero,
                     techIDs: Array(selectedTechIDs)
                 )
