@@ -75,7 +75,19 @@ private extension AddProjectView {
     private var coreInformationSection: some View {
         Section("Core Information") {
             TextField("Title", text: $viewModel.title)
+                .onChange(of: viewModel.title) { oldValue, newValue in
+                    if newValue.count > 50 {
+                        viewModel.title = String(newValue.prefix(50))
+                    }
+                }
+            
+            // SHORT DESC VALIDATION
             TextField("Short Description", text: $viewModel.shortDesc)
+                .onChange(of: viewModel.shortDesc) { oldValue, newValue in
+                    if newValue.count > 120 {
+                        viewModel.shortDesc = String(newValue.prefix(120))
+                    }
+                }
             Picker("Category", selection: $viewModel.category) {
                 ForEach(["macOS App", "iOS App", "Web", "Networking"], id: \.self) { Text($0) }
             }
