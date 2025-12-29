@@ -12,13 +12,13 @@ struct AddProjectView: View {
     @Binding var isPresented: Bool
     var onComplete: () -> Void
     @State private var viewModel: AddProjectViewModel
-
+    
     init(isPresented: Binding<Bool>, projectToEdit: Project? = nil, onComplete: @escaping () -> Void) {
         self._isPresented = isPresented
         self.onComplete = onComplete
         self._viewModel = State(initialValue: AddProjectViewModel(projectToEdit: projectToEdit))
     }
-
+    
     var body: some View {
         ZStack {
             mainContent
@@ -94,40 +94,84 @@ private extension AddProjectView {
     
     private var detailedDescriptionSection: some View {
         Section("Detailed Description") {
-            TextEditor(text: $viewModel.description)
-                .frame(height: 100)
+            ZStack(alignment: .topLeading) {
+                if viewModel.description.isEmpty {
+                    Text("Write something amazing...")
+                        .foregroundColor(.gray.opacity(0.5))
+                        .padding(.top, 8)
+                        .padding(.leading, 5)
+                }
+                
+                TextEditor(text: $viewModel.description)
+                    .frame(minHeight: 100)
+                    .scrollContentBackground(.hidden) // Biar background-nya transparan/ikut Form
+                    .padding(.horizontal, -5) // Adjust alignment agar lurus dengan label lain
+            }
         }
     }
     
     private var techStackSection: some View {
-        Section("Tech Stack") {
-            HStack {
-                TextField("New tech...", text: $viewModel.newTechName)
-                    .onSubmit { Task { await viewModel.createTech() } }
-                Button { Task { await viewModel.createTech() } } label: {
-                    Image(systemName: "plus.circle.fill")
+        Section {
+            VStack(alignment: .leading, spacing: 12) {
+                // Input Field yang lebih rapi
+                HStack {
+                    TextField("New tech (e.g. Docker, Combine)...", text: $viewModel.newTechName)
+                        .textFieldStyle(.plain)
+                        .onSubmit { Task { await viewModel.createTech() } }
+                    
+                    Button {
+                        Task { await viewModel.createTech() }
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                            .symbolRenderingMode(.hierarchical)
+                            .font(.title2)
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(viewModel.newTechName.isEmpty)
                 }
+                .padding(10)
+                .background(Color(NSColor.controlBackgroundColor)) // Background halus
+                .cornerRadius(8)
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.2), lineWidth: 1))
+
+                // Chips Grid menggunakan FlowLayout
+                techChipsGrid
             }
-            techChipsGrid
+            .padding(.vertical, 4)
+        } header: {
+            Text("Tech Stack").font(.headline)
         }
     }
-    
+
     private var techChipsGrid: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 90))], spacing: 8) {
+        FlowLayout(spacing: 8) {
             ForEach(viewModel.masterTechs) { tech in
                 let isSelected = viewModel.selectedTechIDs.contains(tech.id)
-                Text(tech.name)
-                    .font(.caption).padding(8)
-                    .background(isSelected ? Color.accentColor : Color.gray.opacity(0.2))
-                    .foregroundColor(isSelected ? .white : .primary)
-                    .cornerRadius(10)
-                    .onTapGesture {
+                
+                HStack(spacing: 4) {
+                    Text(tech.name)
+                    if isSelected {
+                        Image(systemName: "checkmark").font(.system(size: 10, weight: .bold))
+                    }
+                }
+                .font(.subheadline)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(
+                    Capsule()
+                        .fill(isSelected ? Color.accentColor : Color.gray.opacity(0.15))
+                )
+                .foregroundColor(isSelected ? .white : .primary)
+                // Animasi halus saat ditekan
+                .scaleEffect(isSelected ? 1.05 : 1.0)
+                .onTapGesture {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
                         if isSelected { viewModel.selectedTechIDs.remove(tech.id) }
                         else { viewModel.selectedTechIDs.insert(tech.id) }
                     }
+                }
             }
         }
-        .padding(.vertical, 10)
     }
     
     // MARK: - Footer & Overlays
