@@ -257,10 +257,8 @@ private extension AddProjectView {
     // MARK: - Footer & Overlays
     private var footerView: some View {
         HStack {
-            if viewModel.projectToEdit == nil {
-                Button("Cancel") { dismiss() }
-                    .buttonStyle(.plain)
-            }
+            Button("Cancel") { dismiss() }
+                .buttonStyle(.plain)
             Spacer()
             
             Button(viewModel.projectToEdit == nil ? "Save Project" : "Update Changes") {
