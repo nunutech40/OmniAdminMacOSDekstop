@@ -38,7 +38,7 @@ class APIClient {
             parameters: parameters,
             encoding: JSONEncoding.default
         )
-        .serializingDecodable(AppResponse<T>.self)
+            .serializingDecodable(AppResponse<T>.self)
         
         let response = await dataTask.response
         
@@ -48,6 +48,42 @@ class APIClient {
             if appResponse.success {
                 guard let data = appResponse.data else { throw APIError.unknown }
                 return data
+            } else {
+                throw APIError.serverError(appResponse.message)
+            }
+        case .failure(let error):
+            throw APIError.networkError(error.localizedDescription)
+        }
+    }
+    
+    func upload(
+        _ endpoint: String,
+        fileData: Data,
+        fileName: String,
+        mimeType: String
+    ) async throws -> String {
+        let url = APIConstants.baseURL + endpoint
+        
+        let uploadTask = session.upload(
+            multipartFormData: { multipartFormData in
+                multipartFormData.append(
+                    fileData,
+                    withName: "file",
+                    fileName: fileName,
+                    mimeType: mimeType
+                )
+            },
+            to: url,
+            method: .post
+        )
+            .serializingDecodable(AppResponse<String>.self)
+        
+        let response = await uploadTask.response
+        
+        switch response.result {
+        case .success(let appResponse):
+            if appResponse.success {
+                return appResponse.data ?? ""
             } else {
                 throw APIError.serverError(appResponse.message)
             }

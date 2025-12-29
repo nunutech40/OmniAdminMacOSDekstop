@@ -14,6 +14,7 @@ protocol PortfolioRepositoryProtocol {
         shortDesc: String,
         description: String,
         category: String,
+        thumbnailUrl: String?,
         linkGithub: String,
         linkDemo: String,
         isHero: Bool,
@@ -34,18 +35,31 @@ final class PortfolioRepository: PortfolioRepositoryProtocol {
         return try await client.request(APIConstants.Endpoints.portfolios, method: .get)
     }
     
-    func createProject(title: String, shortDesc: String, description: String, category: String, linkGithub: String, linkDemo: String, isHero: Bool, techIDs: [UUID]) async throws -> Project {
+    func createProject(
+        title: String,
+        shortDesc: String,
+        description: String,
+        category: String,
+        thumbnailUrl: String?, // Terima URL String
+        linkGithub: String,
+        linkDemo: String,
+        isHero: Bool,
+        techIDs: [UUID]
+    ) async throws -> Project {
+        
         let parameters: [String: Any?] = [
             "title": title,
             "slug": title.lowercased().replacingOccurrences(of: " ", with: "-"),
-            "shortDesc": shortDesc.isEmpty ? nil : shortDesc, // Kirim nil kalo kosong
+            "shortDesc": shortDesc.isEmpty ? nil : shortDesc,
             "description": description.isEmpty ? nil : description,
             "category": category.isEmpty ? nil : category,
+            "thumbnailUrl": thumbnailUrl, // Kirim URL hasil upload tadi
             "linkGithub": linkGithub.isEmpty ? nil : linkGithub,
             "linkDemo": linkDemo.isEmpty ? nil : linkDemo,
             "isHero": isHero,
             "techStackIDs": techIDs.map { $0.uuidString }
         ]
+        
         return try await client.request(APIConstants.Endpoints.portfolios, method: .post, parameters: parameters)
     }
     
@@ -56,11 +70,13 @@ final class PortfolioRepository: PortfolioRepositoryProtocol {
             "shortDesc": project.shortDesc,
             "description": project.description,
             "category": project.category,
+            "thumbnailUrl": project.thumbnailUrl, // Pastikan model Project lo punya field ini
             "linkGithub": project.linkGithub,
             "linkDemo": project.linkDemo,
             "isHero": project.isHero,
             "techStackIDs": project.techStackIDs ?? []
         ]
+        
         let endpoint = "\(APIConstants.Endpoints.portfolios)/\(project.id.uuidString)"
         return try await client.request(endpoint, method: .put, parameters: parameters)
     }

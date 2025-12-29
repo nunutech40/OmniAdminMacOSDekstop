@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct AddProjectView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var isPresented: Bool
     var onComplete: () -> Void
     @State private var viewModel: AddProjectViewModel
+    @State private var showFilePicker = false
     
     init(isPresented: Binding<Bool>, projectToEdit: Project? = nil, onComplete: @escaping () -> Void) {
         self._isPresented = isPresented
@@ -27,6 +29,15 @@ struct AddProjectView: View {
                 loadingOverlay
             }
         }
+        .fileImporter(
+            isPresented: $showFilePicker,
+            allowedContentTypes: [.image],
+            onCompletion: { result in
+                if case .success(let url) = result {
+                    viewModel.handleImageSelection(url: url)
+                }
+            }
+        )
         .task { await viewModel.loadTechs() }
         .alert("Success", isPresented: $viewModel.showSuccessAlert) {
             successAlertButtons
@@ -97,10 +108,46 @@ private extension AddProjectView {
     
     private var linksAndMediaSection: some View {
         Section("Links & Media") {
+            VStack(alignment: .leading) {
+                Text("Thumbnail Image").font(.caption).foregroundColor(.secondary)
+                
+                Button {
+                    showFilePicker = true
+                } label: {
+                    Group {
+                        if let image = viewModel.previewImage {
+                            // 1. Tampilkan Gambar Lokal (yang baru di-browse)
+                            Image(nsImage: image)
+                                .resizable()
+                        } else if !viewModel.thumbnailUrl.isEmpty {
+                            // 2. Tampilkan Gambar dari Server (untuk Edit mode)
+                            AsyncImage(url: URL(string: "http://157.10.161.215:8080\(viewModel.thumbnailUrl)")) { img in
+                                img.resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        } else {
+                            // 3. Placeholder jika benar-benar kosong
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1))
+                                VStack {
+                                    Image(systemName: "photo.badge.plus").font(.largeTitle)
+                                    Text("Click to Browse Image")
+                                }.foregroundColor(.gray)
+                            }
+                        }
+                    }
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 150)
+                    .cornerRadius(8)
+                    .clipped() // Agar gambar nggak keluar dari frame
+                }
+                .buttonStyle(.plain)
+            }
+            
             TextField("GitHub URL", text: $viewModel.linkGithub)
             TextField("Demo URL", text: $viewModel.linkDemo)
             TextField("Store URL", text: $viewModel.linkStore)
-            TextField("Thumbnail URL", text: $viewModel.thumbnailUrl)
         }
     }
     
@@ -145,7 +192,7 @@ private extension AddProjectView {
                 .background(Color(NSColor.controlBackgroundColor)) // Background halus
                 .cornerRadius(8)
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.2), lineWidth: 1))
-
+                
                 // Chips Grid menggunakan FlowLayout
                 techChipsGrid
             }
@@ -154,7 +201,7 @@ private extension AddProjectView {
             Text("Tech Stack").font(.headline)
         }
     }
-
+    
     private var techChipsGrid: some View {
         FlowLayout(spacing: 8) {
             ForEach(viewModel.masterTechs) { tech in

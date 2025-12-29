@@ -53,4 +53,8 @@ final class Injection {
             storage: localStorage
         )
     }
+    
+    func provideMediaRepository() -> MediaRepositoryProtocol {
+        return MediaRepository(client: provideAPIClient())
+    }
 }
