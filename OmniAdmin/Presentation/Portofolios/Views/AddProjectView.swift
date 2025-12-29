@@ -4,6 +4,7 @@
 //
 //  Created by Nunu Nugraha on 27/12/25.
 //
+
 import SwiftUI
 
 struct AddProjectView: View {
@@ -20,96 +21,97 @@ struct AddProjectView: View {
 
     var body: some View {
         ZStack {
-            VStack(alignment: .leading, spacing: 0) {
-                Text(viewModel.projectToEdit == nil ? "Create New Project" : "Edit Project")
-                    .font(.system(size: 28, weight: .bold)).padding(.bottom, 20)
-
-                Form {
-                    Section("Core Information") {
-                        TextField("Title", text: $viewModel.title)
-                        TextField("Short Description", text: $viewModel.shortDesc)
-                        Picker("Category", selection: $viewModel.category) {
-                            ForEach(["macOS App", "iOS App", "Web", "Networking"], id: \.self) { Text($0) }
-                        }
-                        Toggle("Feature as Hero", isOn: $viewModel.isHero)
-                    }
-
-                    Section("Links & Media") {
-                        TextField("GitHub URL", text: $viewModel.linkGithub)
-                        TextField("Demo URL", text: $viewModel.linkDemo)
-                        TextField("Store URL", text: $viewModel.linkStore)
-                        TextField("Thumbnail URL", text: $viewModel.thumbnailUrl)
-                    }
-
-                    Section("Detailed Description") {
-                        TextEditor(text: $viewModel.description).frame(height: 100)
-                    }
-
-                    Section("Tech Stack") {
-                        HStack {
-                            TextField("New tech...", text: $viewModel.newTechName)
-                                .onSubmit { Task { await viewModel.createTech() } }
-                            Button { Task { await viewModel.createTech() } } label: { Image(systemName: "plus.circle.fill") }
-                        }
-                        techChipsGrid
-                    }
-                }
-                .formStyle(.grouped)
-
-                // FOOTER
-                HStack {
-                    if viewModel.projectToEdit == nil {
-                        Button("Cancel") { dismiss() }.buttonStyle(.plain)
-                    }
-                    Spacer()
-                    
-                    Button(viewModel.projectToEdit == nil ? "Save Project" : "Update Changes") {
-                        Task { await viewModel.save() }
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(viewModel.isSaving || viewModel.title.isEmpty)
-                }
-                .padding(.top, 20)
-            }
-            .padding(30)
+            mainContent
             
-            // --- LOADING OVERLAY (Blokir Interaksi) ---
             if viewModel.isSaving {
-                ZStack {
-                    Color.black.opacity(0.15)
-                        .edgesIgnoringSafeArea(.all)
-                    VStack(spacing: 12) {
-                        ProgressView()
-                            .controlSize(.large)
-                        Text("Saving Project...").font(.caption).bold()
-                    }
-                    .padding(20)
-                    .background(.ultraThinMaterial)
-                    .cornerRadius(12)
-                }
+                loadingOverlay
             }
         }
         .task { await viewModel.loadTechs() }
-        // --- ALERT SUKSES ---
         .alert("Success", isPresented: $viewModel.showSuccessAlert) {
-            Button("OK") {
-                onComplete() // Refresh dashboard
-                dismiss()    // Tutup halaman
-            }
+            successAlertButtons
         } message: {
             Text("Your project has been saved successfully to the database.")
         }
-        // --- ALERT ERROR ---
-        .alert("Error", isPresented: Binding(
-            get: { viewModel.errorMessage != nil },
-            set: { _ in viewModel.errorMessage = nil }
-        )) {
+        .alert("Error", isPresented: errorAlertBinding) {
             Button("Got it") { }
         } message: {
             Text(viewModel.errorMessage ?? "Unknown error")
         }
     }
+}
 
+// MARK: - Subviews
+private extension AddProjectView {
+    
+    private var mainContent: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            headerView
+            
+            projectForm
+            
+            footerView
+        }
+        .padding(30)
+    }
+    
+    private var headerView: some View {
+        Text(viewModel.projectToEdit == nil ? "Create New Project" : "Edit Project")
+            .font(.system(size: 28, weight: .bold))
+            .padding(.bottom, 20)
+    }
+    
+    private var projectForm: some View {
+        Form {
+            coreInformationSection
+            linksAndMediaSection
+            detailedDescriptionSection
+            techStackSection
+        }
+        .formStyle(.grouped)
+    }
+    
+    // MARK: - Form Sections
+    private var coreInformationSection: some View {
+        Section("Core Information") {
+            TextField("Title", text: $viewModel.title)
+            TextField("Short Description", text: $viewModel.shortDesc)
+            Picker("Category", selection: $viewModel.category) {
+                ForEach(["macOS App", "iOS App", "Web", "Networking"], id: \.self) { Text($0) }
+            }
+            Toggle("Feature as Hero", isOn: $viewModel.isHero)
+        }
+    }
+    
+    private var linksAndMediaSection: some View {
+        Section("Links & Media") {
+            TextField("GitHub URL", text: $viewModel.linkGithub)
+            TextField("Demo URL", text: $viewModel.linkDemo)
+            TextField("Store URL", text: $viewModel.linkStore)
+            TextField("Thumbnail URL", text: $viewModel.thumbnailUrl)
+        }
+    }
+    
+    private var detailedDescriptionSection: some View {
+        Section("Detailed Description") {
+            TextEditor(text: $viewModel.description)
+                .frame(height: 100)
+        }
+    }
+    
+    private var techStackSection: some View {
+        Section("Tech Stack") {
+            HStack {
+                TextField("New tech...", text: $viewModel.newTechName)
+                    .onSubmit { Task { await viewModel.createTech() } }
+                Button { Task { await viewModel.createTech() } } label: {
+                    Image(systemName: "plus.circle.fill")
+                }
+            }
+            techChipsGrid
+        }
+    }
+    
     private var techChipsGrid: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 90))], spacing: 8) {
             ForEach(viewModel.masterTechs) { tech in
@@ -126,5 +128,53 @@ struct AddProjectView: View {
             }
         }
         .padding(.vertical, 10)
+    }
+    
+    // MARK: - Footer & Overlays
+    private var footerView: some View {
+        HStack {
+            if viewModel.projectToEdit == nil {
+                Button("Cancel") { dismiss() }
+                    .buttonStyle(.plain)
+            }
+            Spacer()
+            
+            Button(viewModel.projectToEdit == nil ? "Save Project" : "Update Changes") {
+                Task { await viewModel.save() }
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(viewModel.isSaving || viewModel.title.isEmpty)
+        }
+        .padding(.top, 20)
+    }
+    
+    private var loadingOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.15)
+                .edgesIgnoringSafeArea(.all)
+            VStack(spacing: 12) {
+                ProgressView()
+                    .controlSize(.large)
+                Text("Saving Project...").font(.caption).bold()
+            }
+            .padding(20)
+            .background(.ultraThinMaterial)
+            .cornerRadius(12)
+        }
+    }
+    
+    // MARK: - Helpers
+    private var successAlertButtons: some View {
+        Button("OK") {
+            onComplete()
+            dismiss()
+        }
+    }
+    
+    private var errorAlertBinding: Binding<Bool> {
+        Binding(
+            get: { viewModel.errorMessage != nil },
+            set: { _ in viewModel.errorMessage = nil }
+        )
     }
 }
